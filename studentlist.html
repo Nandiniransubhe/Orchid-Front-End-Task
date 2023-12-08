@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #student-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .student-item {
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .pagination-item {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student List</h1>
+    
+    <ul id="student-list"></ul>
+
+    <ul id="pagination"></ul>
+
+    <script>
+        const students = [
+            { name: 'John Doe', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane Smith', email: 'jane@example.com', username: 'jane_smith' },
+            { name: 'John Doe', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane Smi', email: 'jane@example.com', username: 'jane_smith' },
+            { name: 'John ', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane Smith', email: 'jane@example.com', username: 'jane_smith' },
+            { name: 'John Doe', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane Smith', email: 'jane@example.com', username: 'jane_smith' },
+            { name: 'John Doe', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane S', email: 'jane@example.com', username: 'jane_smith' },
+            { name: 'John D', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane Smith', email: 'jane@example.com', username: 'jane_smith' },
+            { name: 'John Doe', email: 'john@example.com', username: 'john_doe' },
+            { name: 'Jane Smith', email: 'jane@example.com', username: 'jane_smith' },
+        ];
+
+        const itemsPerPage = 2; 
+        let currentPage = 1;
+
+        function displayStudents(page) {
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const slicedStudents = students.slice(startIndex, endIndex);
+
+            const studentList = document.getElementById('student-list');
+            studentList.innerHTML = '';
+
+            slicedStudents.forEach(student => {
+                const listItem = document.createElement('li');
+                listItem.className = 'student-item';
+                listItem.innerHTML = `
+                    <strong>Name:</strong> ${student.name}<br>
+                    <strong>Email:</strong> ${student.email}<br>
+                    <strong>Username:</strong> ${student.username}
+                `;
+                studentList.appendChild(listItem);
+            });
+        }
+
+        function displayPagination() {
+            const totalPages = Math.ceil(students.length / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = document.createElement('li');
+                pageItem.className = 'pagination-item';
+                pageItem.textContent = i;
+                pageItem.addEventListener('click', () => {
+                    currentPage = i;
+                    displayStudents(currentPage);
+                    highlightCurrentPage();
+                });
+                pagination.appendChild(pageItem);
+            }
+
+            highlightCurrentPage();
+        }
+
+        function highlightCurrentPage() {
+            const paginationItems = document.querySelectorAll('.pagination-item');
+            paginationItems.forEach(item => {
+                item.classList.remove('active');
+                if (parseInt(item.textContent) === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        displayStudents(currentPage);
+        displayPagination();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <style>
+        
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+    </style>
+</head>
+<body>
+
+    <h1>Student Details</h1>
+
+    <div id="studentDetails">
+
+    </div>
+
+    <button onclick="goBack()">Go Back</button>
+
+    <script>
+
+const students = [
+    { id: 1, name: 'John Doe', age: 20, grade: 'A' },
+    { id: 2, name: 'Jane Smith', age: 22, grade: 'B' },
+
+];
+
+function showAllStudents() {
+    const studentList = document.getElementById('studentList');
+
+    students.forEach(student => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<a href="studentDetails.html?id=${student.id}">${student.name}</a>`;
+        studentList.appendChild(listItem);
+    });
+}
+
+function showStudentDetails() {
+    const studentDetailsContainer = document.getElementById('studentDetails');
+    const urlParams = new URLSearchParams(window.location.search);
+    const studentId = parseInt(urlParams.get('id'));
+
+    const student = students.find(s => s.id === studentId);
+
+    if (student) {
+        studentDetailsContainer.innerHTML = `
+            <p><strong>Name:</strong> ${student.name}</p>
+            <p><strong>Age:</strong> ${student.age}</p>
+            <p><strong>Grade:</strong> ${student.grade}</p>
+        `;
+    } else {
+        studentDetailsContainer.innerHTML = '<p>Student not found</p>';
+    }
+}
+
+function goBack() {
+    window.history.back();
+}
+
+// Depending on the page, call the appropriate function
+if (window.location.pathname.includes('studentDetails.html')) {
+    showStudentDetails();
+} else {
+    showAllStudents();
+}
+
+    </script>
+</body>
+</html>
